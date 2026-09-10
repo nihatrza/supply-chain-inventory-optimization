@@ -217,27 +217,27 @@ The dashboard features a dark corporate UI theme designed for executive usabilit
 ### 1️⃣ Executive Overview
 High-level executive scorecard tracking Total Revenue ($33.43M), Profit ($11M), Profit Margin (33.2%), regional performance breakdown, and overall Inventory Health (94.48%).
 
-![Executive Overview](docs/screenshots/page1_overview.png)
+![Overview](asseets/page1_overview.png)
 
 ### 2️⃣ Inventory Performance
 Product-level holding costs, unit cost vs. price correlation, price tier segmentation (Low, Mid, High), and revenue drivers.
 
-![Inventory Performance](docs/screenshots/page2_inventory.png)
+![Inventory Performance](asseets/page2_inventory.png)
 
 ### 3️⃣ Stock & Risk Analysis
 Reorder risk trends, stockout occurrences, regional risk allocation, and critical risk matrices.
 
-![Stock & Risk Analysis](docs/screenshots/page3_stock_risk.png)
+![Stock & Risk Analysis](asseets/page3_stock_risk.png)
 
 ### 4️⃣ Demand & Forecast
 Advanced forecasting diagnostics, WAPE % tracking, Forecast Bias, weekly demand patterns, and promotional lift evaluation.
 
-![Demand & Forecast](docs/screenshots/page4_demand_forecast.png)
+![Demand & Forecast](asseets/page4_demand_forecast.png)
 
 ### 5️⃣ Warehouse & Supplier Performance
 Fulfillment lead-time analysis, supplier risk evaluation, delayed order tracking, and warehouse profitability equity.
 
-![Warehouse & Supplier Performance](docs/screenshots/page5_warehouse_supplier.png)
+![Warehouse & Supplier Performance](asseets/page5_warehouse_supplier.png)
 
 ---
 
