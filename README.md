@@ -313,10 +313,14 @@ jupyter notebook notebooks/01_data_preprocessing_etl.ipynb
 
 ---
 
-## 👤 Author & Contact
+## 👤 Author
 
-**Nihat Rzaguluzada**
-Data Analyst / Analytics Engineer
+**Nihat Rzaquluzade | Junior Data Analyst**
 
-🌐 LinkedIn: [linkedin.com/in/nihat-rzaguluzada](https://linkedin.com/in/nihat-rzaguluzada)
-🐙 GitHub: [github.com/nihatrza](https://github.com/nihatrza)
+This project was developed as a professional **Data Analytics portfolio project**, demonstrating skills in Python, PostgreSQL, ETL processes, data cleaning, SQL analysis, and Power BI data visualization.
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nihatrza)
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nihat-rzaquluzade/)
+
+---
