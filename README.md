@@ -1,4 +1,4 @@
-# 📦 Tədarük Zənciri və Anbar Optimallaşdırması Analitikası
+# 📦 Supply Chain & Inventory Optimization Analytics
 
 ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -6,160 +6,160 @@
 ![DAX](https://img.shields.io/badge/DAX-Optimization-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-Anbar səviyyələrini optimallaşdırmaq, yenidən sifariş riskini azaltmaq, tələb proqnozunun dəqiqliyini qiymətləndirmək və təchizatçı logistikasını sadələşdirmək üçün hazırlanmış tam həcmli, uçdan-uca Analytics Engineering layihəsi. Layihə **Python (ETL), PostgreSQL (Data Warehouse) və Power BI (çoxsəhifəli interaktiv dashboard)** üzərində qurulub.
+An enterprise-grade, end-to-end Analytics Engineering project designed to optimize inventory levels, mitigate reorder risk, evaluate demand forecast accuracy, and streamline supplier logistics using **Python (ETL), PostgreSQL (Data Warehouse), and Power BI (Multi-Page Interactive Dashboard)**.
 
 ---
 
-## 📋 Mündəricat
-- [İcmal](#-icmal)
-- [Sistem Arxitekturası](#-sistem-arxitekturası)
-- [Əsas Biznes Nəticələri](#-əsas-biznes-nəticələri)
-- [Repository Strukturu](#-repository-strukturu)
-- [Data Pipeline və ETL Prosesi](#-data-pipeline-və-etl-prosesi)
-- [Verilənlər Bazası Sxemi və SQL Sorğu Kitabxanası](#-verilənlər-bazası-sxemi-və-sql-sorğu-kitabxanası)
-- [Power BI Dashboard Arxitekturası](#-power-bi-dashboard-arxitekturası)
-- [DAX Ölçü Kitabxanası](#-dax-ölçü-kitabxanası)
-- [Necə Təkrarlamaq Olar](#-necə-təkrarlamaq-olar)
-- [Müəllif və Əlaqə](#-müəllif-və-əlaqə)
+## 📋 Table of Contents
+- [Executive Summary](#-executive-summary)
+- [System Architecture](#-system-architecture)
+- [Key Business Insights](#-key-business-insights)
+- [Repository Structure](#-repository-structure)
+- [Data Pipeline & ETL Workflow](#-data-pipeline--etl-workflow)
+- [Database Schema & SQL Query Library](#-database-schema--sql-query-library)
+- [Power BI Dashboard Architecture](#-power-bi-dashboard-architecture)
+- [DAX Measure Library](#-dax-measure-library)
+- [How to Reproduce](#-how-to-reproduce)
+- [Author & Contact](#-author--contact)
 
 ---
 
-## 📑 İcmal
+## 📑 Executive Summary
 
-Qlobal tədarük zənciri idarəçiliyində məhsul mövcudluğu ilə saxlama xərcləri arasında balans yaratmaq həlledicidir. Artıq anbar dövriyyə kapitalını dondurur, gözlənilməz stok-out isə gəlir itkisinə və müştəri itkisinə səbəb olur.
+In global supply chain management, balancing product availability against holding costs is critical. Excess inventory locks up working capital, while unexpected stockouts cause lost revenue and customer attrition.
 
-Bu layihə **50 SKU, 10 təchizatçı və 5 regional distribusiya anbarı** üzrə **91,250 gündəlik əməliyyat qeydini** təhlil edir. Tək-fakt (single-fact) data warehouse arxitekturası və interaktiv 5-səhifəlik Power BI dashboard qurmaqla, bu həll rəhbərliyə imkan verir ki:
-- Məhsul qiymət qrupları üzrə maliyyə mənfəət marjasını və dondurulmuş kapitalı izləsin.
-- Statistik göstəricilər (**WAPE %** və **Forecast Bias %**) vasitəsilə proqnoz xətalarını diaqnoz etsin.
-- Stok-out baş verməzdən əvvəl yenidən sifariş risklərini və təchizatçı çatdırılma müddəti darboğazlarını müəyyən etsin.
-- Promo kampaniyaların gəlirliliyini, ümumi mənfəət marjasını aşındırmadan qiymətləndirsin.
+This project analyzes **91,250 daily operational records** across 50 SKUs, 10 suppliers, and 5 regional distribution warehouses. By building a single-fact data warehouse architecture and an interactive 5-page Power BI dashboard, this solution enables executives to:
+- Monitor financial profit margins and capital tie-up across product price tiers.
+- Diagnose forecast errors using statistical metrics (**WAPE %** and **Forecast Bias %**).
+- Identify reorder risks and supplier lead-time bottlenecks before stockout events occur.
+- Evaluate promotional campaign profitability without eroding gross margins.
 
 ---
 
-## 🏗 Sistem Arxitekturası
+## 🏗 System Architecture
 
 ```
-                          DATA ARXİTEKTURA PIPELINE
+                             DATA ARCHITECTURE PIPELINE
 
 ┌────────────────────────┐     ┌────────────────────────────┐     ┌───────────────────────────┐
-│   Xam Data (CSV)        │     │   Python ETL Pipeline       │     │  PostgreSQL Data Warehouse │
-│   - 91,250 gündəlik sətir│ ─▶ │  - Təmizləmə & Null Audit   │ ─▶  │  - Single-Fact Sxem        │
-│   - 15 operativ sütun   │     │  - Feature Engineering      │     │  - Performans İndeksləri   │
-└────────────────────────┘     │  - 24 final sütun           │     │  - Analitik SQL Kitabxanası│
+│    Raw Data (CSV)       │     │   Python ETL Pipeline       │     │  PostgreSQL Data Warehouse │
+│  - 91,250 Daily Rows    │ ─▶  │  - Cleaning & Null Audits   │ ─▶  │  - Single-Fact Schema      │
+│  - 15 Operational Cols  │     │  - Feature Engineering      │     │  - Performance Indexes     │
+└────────────────────────┘     │  - 24 Final Columns         │     │  - Analytical SQL Library  │
                                 └────────────────────────────┘     └───────────────────────────┘
                                                                                  │
                                                                                  ▼
                                                                   ┌───────────────────────────┐
                                                                   │   Power BI Dashboard       │
-                                                                  │  - Dinamik DAX Mühərriki   │
-                                                                  │  - 5 İnteraktiv Səhifə     │
-                                                                  │  - C-Level İçgörülər       │
+                                                                  │  - Dynamic DAX Engine      │
+                                                                  │  - 5 Interactive Pages     │
+                                                                  │  - C-Level Insights        │
                                                                   └───────────────────────────┘
 ```
 
 ---
 
-## 💡 Əsas Biznes Nəticələri
+## 💡 Key Business Insights
 
-### 1. Maliyyə və Satış Performansı
+### 1. Financial & Sales Performance
 
-#### 📈 Regional Lider SKU-lar
-- **Universal Bestseller (`SKU_38`):** Bütün 4 coğrafi region (Şimal, Cənub, Şərq, Qərb) üzrə **#1 mənfəət gətirən məhsul**dur. Ən yüksək mənfəət Cənub (**96.1K $**) və Şimal (**94.2K $**) regionlarında qeydə alınıb.
-- **Sabit İkinci (`SKU_40`):** Bütün regionlar üzrə istisnasız olaraq ümumi gəlirlilikdə **#2 yeri** tutur (**84.6K $ – 93.9K $** aralığında).
-- **Regional Fərqlilik:** `SKU_11` Şərq, Şimal və Qərb regionlarında #3 yerdə olsa da, Cənubda bu yeri `SKU_20` (**81.8K $**) tutur.
+#### 📈 Regional Top-Performing SKUs
+- **Universal Bestseller (`SKU_38`):** Ranks as the **#1 profit-generating product** across ALL 4 geographic regions (North, South, East, West). Peak profits were recorded in the South (**$96.1K**) and North (**$94.2K**) regions.
+- **Consistent Runner-Up (`SKU_40`):** Holds the **#2 spot** in overall profitability across all regions without exception (**$84.6K – $93.9K** range).
+- **Regional Variation:** While `SKU_11` secures #3 rank in East, North, and West regions, `SKU_20` (**$81.8K**) replaces it as the #3 product specifically in the South.
 
-#### 💰 Qiymət Seqmentasiyası və Marja Dinamikası
-- **Mənfəət Çempionu (Yüksək Qiymət):** 25 $ və yuxarı dəyərli məhsullar ən yüksək gəlirlilik marjasını — **37.96%** — göstərir.
-- **Kapital Konsentrasiyası (Orta Qiymət):** 15–24 $ aralığındakı məhsullar dondurulmuş anbar kapitalının böyük hissəsini (**255.56M $**) və 49 SKU üzrə ümumi mənfəət həcminin (**4.80M $**) əsas hissəsini təşkil edir.
-- **Həcm Mobilliyi (Aşağı Qiymət):** Aşağı qiymətli məhsullar (123.18M $ dondurulmuş kapital) sabit **30.85%** mənfəət marjası ilə davamlı anbar dövriyyəsi təmin edir.
+#### 💰 Price Segmentation & Margin Dynamics
+- **Profitability Champion (High Price):** High-value products ($25+) yield the highest profitability margin at **37.96%**.
+- **Capital Concentration (Mid Price):** Mid-range products ($15–$24) account for the vast majority of tied-up inventory capital (**$255.56M**) and drive the bulk of total profit volume (**$4.80M**) across 49 SKUs.
+- **Volume Mobility (Low Price):** Low-cost products ($123.18M holding capital) provide consistent inventory turnover with a stable **30.85% profit margin**.
 
-#### 🎯 Promo Kampaniya Effektivliyi
-- **Marja Bütövlüyü:** Promo günlərində mənfəət marjası (**32.13%**) adi satış günlərinə (**32.17%**) demək olar ki, eyni qalıb — marja aşınması sıfırdır.
-- **Hədəflənmiş Həcm Artımı:** Kampaniyalar məhsul gəlirliliyinə xələl gətirmədən satış həcmini (**230.9K vahid**) və gəliri (**4.23M $**) artırıb.
-
----
-
-### 2. Anbar Nəzarəti və Proqnozlaşdırma Analitikası
-
-#### 🔄 Anbar Sürəti və Satış Dinamikası (Stock-to-Sales)
-- **Yüksək Dövriyyə Sürəti:** Lider SKU-lar (`SKU_38`, `SKU_40`, `SKU_17`) aqressiv **0.01 Stock-to-Sales** nisbətini saxlayır.
-- **Səmərəli Anbar İdarəçiliyi:** Orta gündəlik 438–491 vahid anbar olsa da, illik satış hər SKU üzrə 36K+ vahidi ötür — bu, **passiv və ya "ölü" anbarın olmadığını** sübut edir.
-
-#### 📉 Aylıq Proqnoz Xətası Dinamikası (WAPE % Trendi)
-- **Optimal Yüksək Həcm Ayları (Yan – İyun):** Proqnoz dəqiqliyi ən pik satış aylarında ən yüksəkdir — Çəkili Mütləq Faiz Xətası (**WAPE**) 7.96% – 10.59% aralığında qalır.
-- **Aşağı-Piklik Proqnoz Fərqi (Sen – Okt):** İkinci yarıilin satış həcmi düşdükcə (sentyabrda 76.3K vahidlə minimuma çatır), WAPE xətası **22.80%**-ə qədər sıçrayır — bu, aşağı tələb dövründə həddindən artıq proqnozlaşdırmaya işarədir.
+#### 🎯 Promotional Campaign Efficiency
+- **Margin Integrity:** Profit margins on promotional days (**32.13%**) remained almost identical to regular sales days (**32.17%**), showing zero margin erosion.
+- **Targeted Volume Lift:** Campaigns successfully increased sales volume (**230.9K units**) and revenue (**$4.23M**) without sacrificing product profitability.
 
 ---
 
-### 3. Tədarük Zənciri və Anbar Logistikası
+### 2. Inventory Control & Forecasting Analytics
 
-#### 🚚 Təchizatçı Portfeli və Çatdırılma Müddəti Səmərəliliyi
-- **Gəlir Lideri Təchizatçı (`SUP_7`):** 248.8K satılmış vahid üzərindən şirkətə ən yüksək ümumi gəliri — **4.45M $** — gətirir.
-- **Çatdırılma Sürəti:** `SUP_5` ən sürətli çatdırılma dövrünə malikdir — orta **7.0 gün**, `SUP_4` isə ən uzun dövrə malikdir (**8.6 gün**).
-- **Proporsional Yenidən Sifariş Riski:** Yenidən sifariş risk hadisələri ümumi əməliyyat günləri ilə birbaşa korrelyasiya edir, bütün aktiv təchizatçılar üzrə sabit **~5.5% risk dərəcəsini** saxlayır.
+#### 🔄 Inventory Velocity & Sales Dynamics (Stock-to-Sales)
+- **High Turnover Velocity:** Top SKUs (`SKU_38`, `SKU_40`, `SKU_17`) maintain an aggressive **Stock-to-Sales ratio of 0.01**.
+- **Lean Stock Management:** Despite holding an average daily inventory of 438–491 units, annual sales exceed 36K+ units per SKU, proving **zero slow-moving or dead inventory** in the warehouses.
 
-#### 🏭 Anbar Əməliyyat Səmərəliliyi Matrisi
-- **Logistika Mərkəzi Lideri (`WH_2`):** Ən yüksək ümumi gəliri (**7.40M $**) və xalis mənfəəti (**2.41M $**) göstərir.
-- **Balanslaşdırılmış İş Yükü Bölgüsü:** Bütün 5 distribusiya mərkəzi eyni sayda — 50 SKU — idarə edir və yenidən sifariş riskləri bərabər paylanıb (**~1,000 risk hadisəsi hər anbar üzrə**). `WH_1` ən aşağı gəliri (**6.27M $**) qeydə alıb.
+#### 📉 Monthly Forecast Error Dynamics (WAPE % Trend)
+- **Optimal High-Volume Months (Jan – Jun):** Forecasting precision is highest during peak sales months, keeping the Weighted Absolute Percentage Error (**WAPE**) low at **7.96% – 10.59%**.
+- **Off-Peak Forecast Variance (Sep – Oct):** As sales volumes dip in H2 (peaking at a low of 76.3K units in September), WAPE error spikes to **22.80%**, indicating over-forecasting during low-demand periods.
 
 ---
 
-## 📂 Repository Strukturu
+### 3. Supply Chain & Warehouse Logistics
+
+#### 🚚 Supplier Portfolio & Lead-Time Efficiency
+- **Revenue Dominant Supplier (`SUP_7`):** Generates the highest total revenue for the company at **$4.45M** across 248.8K units sold.
+- **Delivery Velocity:** `SUP_5` delivers the fastest fulfillment cycle with an average lead time of **7.0 days**, while `SUP_4` records the longest cycle (**8.6 days**).
+- **Proportional Reorder Risk:** Reorder risk events correlate directly with total operational days, maintaining a stable **~5.5% risk rate** across all active suppliers.
+
+#### 🏭 Warehouse Operational Efficiency Matrix
+- **Logistics Hub Leader (`WH_2`):** Generates the highest overall revenue (**$7.40M**) and net profit (**$2.41M**).
+- **Balanced Workload Allocation:** All 5 distribution centers manage exactly 50 SKUs each with evenly distributed reorder risks (**~1,000 risk events per warehouse**). `WH_1` recorded the lowest revenue generation (**$6.27M**).
+
+---
+
+## 📂 Repository Structure
 
 ```text
 supply-chain-inventory-optimization/
 │
 ├── data/
-│   ├── raw/                             # Orijinal xam data (supply_chain_dataset1.csv)
-│   └── processed/                       # Təmizlənmiş və modelləşdirilmiş CSV faylları (fact_inventory_daily.csv, dim_date.csv)
+│   ├── raw/                             # Original raw dataset (supply_chain_dataset1.csv)
+│   └── processed/                       # Cleaned & modeled CSV files (fact_inventory_daily.csv, dim_date.csv)
 │
 ├── notebooks/
-│   ├── 01_data_preprocessing_etl.ipynb   # Python data təmizləmə, validasiya və feature engineering
-│   └── 02_data_modeling_extraction.ipynb # Ölçü (dimension) çıxarılması və data sxem modelləşdirilməsi
+│   ├── 01_data_preprocessing_etl.ipynb   # Python data cleaning, validation & feature engineering
+│   └── 02_data_modeling_extraction.ipynb # Dimensional extraction & data schema modeling
 │
 ├── sql/
-│   ├── 01_schema.sql                     # PostgreSQL cədvəl sxemi və indekslər
-│   ├── 02_data_import.sql                # Data yüklənməsi və bütövlük yoxlama skriptləri
-│   └── 03_analytical_queries.sql         # Qabaqcıl SQL sorğu kitabxanası (Window Functions, CTE-lər)
+│   ├── 01_schema.sql                     # PostgreSQL table creation schema & indexes
+│   ├── 02_data_import.sql                # Data loading & integrity verification scripts
+│   └── 03_analytical_queries.sql         # Advanced SQL query library (Window Functions, CTEs)
 │
 ├── power_bi/
-│   ├── Supply_Chain_Analytics.pbix       # Əsas Power BI hesabat faylı
-│   └── dax_measures.md                   # Bütün DAX ölçülərinin tam kitabxanası
+│   ├── Supply_Chain_Analytics.pbix       # Master Power BI report file
+│   └── dax_measures.md                   # Full library of custom DAX calculations
 │
 ├── docs/
-│   └── screenshots/                      # Dashboard yüksək keyfiyyətli ekran görüntüləri
+│   └── screenshots/                      # Dashboard high-resolution exports
 │       ├── page1_overview.png
 │       ├── page2_inventory.png
 │       ├── page3_stock_risk.png
 │       ├── page4_demand_forecast.png
 │       └── page5_warehouse_supplier.png
 │
-├── .gitignore                            # Mühit və sistem faylı istisna qaydaları
-├── LICENSE                               # MIT Lisenziyası
-└── README.md                             # Əsas layihə sənədləşdirməsi
+├── .gitignore                            # Environment & system file exclusion rules
+├── LICENSE                               # MIT License
+└── README.md                             # Master project documentation
 ```
 
 ---
 
-## 🛠 Data Pipeline və ETL Prosesi
+## 🛠 Data Pipeline & ETL Workflow
 
-**Addım 1: Python Emalı (`01_data_preprocessing_etl.ipynb`)**
-- Dublikat auditi (0 dublikat) və boş dəyər yoxlaması (0 null) aparılıb.
-- Sxem başlıqları PostgreSQL uyğunluğu üçün snake_case formatına salınıb.
-- Feature Engineering həyata keçirilib:
-  - **Maliyyə:** `total_revenue`, `total_cost`, `profit`, `profit_margin`.
-  - **Stok Riskləri:** `below_reorder_flag` (Anbar ≤ Yenidən Sifariş Nöqtəsi), `lost_sales_units`, `lost_revenue`.
-  - **Proqnoz Fərqi:** `forecast_error`, `abs_forecast_error`.
+**Step 1: Python Processing (`01_data_preprocessing_etl.ipynb`)**
+- Conducted duplicate audits (0 duplicates) and missing value verification (0 nulls).
+- Standardized schema headers to snake_case for PostgreSQL compatibility.
+- Executed Feature Engineering:
+  - **Financials:** `total_revenue`, `total_cost`, `profit`, `profit_margin`.
+  - **Stock Risks:** `below_reorder_flag` (Inventory ≤ Reorder Point), `lost_sales_units`, `lost_revenue`.
+  - **Forecast Variance:** `forecast_error`, `abs_forecast_error`.
 
-**Addım 2: Ölçü Modelləşdirilməsi (`02_data_modeling_extraction.ipynb`)**
-- Təqvim ierarxiyaları (`year`, `quarter`, `month`, `month_name`, `day_name`, `day_of_week`) ilə normallaşdırılmış Tarix Ölçüsü (`dim_date`) çıxarılıb.
-- Data warehouse-a optimal yüklənmə üçün əsas 24-sütunlu Fakt Cədvəli (`fact_inventory_daily`) formatlaşdırılıb.
+**Step 2: Dimensional Modeling (`02_data_modeling_extraction.ipynb`)**
+- Extracted a normalized Date Dimension (`dim_date`) featuring calendar hierarchies (year, quarter, month, month_name, day_name, day_of_week).
+- Formatted the primary 24-column Fact Table (`fact_inventory_daily`) for optimized data warehouse loading.
 
 ---
 
-## 🗄 Verilənlər Bazası Sxemi və SQL Sorğu Kitabxanası
+## 🗄 Database Schema & SQL Query Library
 
-### PostgreSQL Cədvəl Sxemi (`01_schema.sql`)
+### PostgreSQL Table Schema (`01_schema.sql`)
 
 ```sql
 CREATE TABLE fact_inventory_daily (
@@ -190,7 +190,7 @@ CREATE TABLE fact_inventory_daily (
 );
 ```
 
-### Nümunə Analitik Sorğu: Regional Top SKU-lar (`03_analytical_queries.sql`)
+### Sample Analytical Query: Regional Top SKUs (`03_analytical_queries.sql`)
 
 ```sql
 WITH RegionalProfit AS (
@@ -210,43 +210,43 @@ ORDER BY region, rank_in_region;
 
 ---
 
-## 📊 Power BI Dashboard Arxitekturası
+## 📊 Power BI Dashboard Architecture
 
-Dashboard icraçı istifadə rahatlığı və sürətli diaqnostik iş axını üçün nəzərdə tutulmuş **tünd korporativ UI temada** 5 səhifədən ibarətdir:
+The dashboard features a dark corporate UI theme designed for executive usability and fast diagnostic workflow across 5 pages:
 
-### 1️⃣ İcmal (Executive Overview)
-Ümumi Gəlir (33.43M $), Mənfəət (11M $), Mənfəət Marjası (33.2%) və ümumi Anbar Sağlamlığını (94.48%) izləyən yüksək səviyyəli icraçı skorkartı, region üzrə performans bölgüsü ilə birlikdə.
+### 1️⃣ Executive Overview
+High-level executive scorecard tracking Total Revenue ($33.43M), Profit ($11M), Profit Margin (33.2%), regional performance breakdown, and overall Inventory Health (94.48%).
 
 ![Executive Overview](docs/screenshots/page1_overview.png)
 
-### 2️⃣ Anbar Performansı (Inventory Performance)
-Məhsul səviyyəsində saxlama xərcləri, vahid dəyəri ilə qiymət korrelyasiyası, qiymət qrupu seqmentasiyası (Aşağı, Orta, Yüksək) və gəlir amilləri.
+### 2️⃣ Inventory Performance
+Product-level holding costs, unit cost vs. price correlation, price tier segmentation (Low, Mid, High), and revenue drivers.
 
 ![Inventory Performance](docs/screenshots/page2_inventory.png)
 
-### 3️⃣ Stok və Risk Təhlili (Stock & Risk Analysis)
-Yenidən sifariş riski trendləri, stok-out halları, regional risk bölgüsü və kritik risk matrisləri.
+### 3️⃣ Stock & Risk Analysis
+Reorder risk trends, stockout occurrences, regional risk allocation, and critical risk matrices.
 
 ![Stock & Risk Analysis](docs/screenshots/page3_stock_risk.png)
 
-### 4️⃣ Tələb və Proqnoz (Demand & Forecast)
-Qabaqcıl proqnozlaşdırma diaqnostikası, WAPE % izlənməsi, Forecast Bias, həftəlik tələb nümunələri və promo təsiri qiymətləndirməsi.
+### 4️⃣ Demand & Forecast
+Advanced forecasting diagnostics, WAPE % tracking, Forecast Bias, weekly demand patterns, and promotional lift evaluation.
 
 ![Demand & Forecast](docs/screenshots/page4_demand_forecast.png)
 
-### 5️⃣ Anbar və Təchizatçı Performansı (Warehouse & Supplier Performance)
-Çatdırılma müddəti təhlili, təchizatçı risk qiymətləndirməsi, gecikmiş sifarişlərin izlənməsi və anbarlar arası mənfəət ədaləti.
+### 5️⃣ Warehouse & Supplier Performance
+Fulfillment lead-time analysis, supplier risk evaluation, delayed order tracking, and warehouse profitability equity.
 
 ![Warehouse & Supplier Performance](docs/screenshots/page5_warehouse_supplier.png)
 
 ---
 
-## 📐 DAX Ölçü Kitabxanası
+## 📐 DAX Measure Library
 
-Hesabatda tətbiq olunan əsas custom DAX ölçüləri:
+Below are key custom DAX measures implemented in the report:
 
 ```dax
-// 1. Çəkili Mütləq Faiz Xətası (WAPE %)
+// 1. Weighted Absolute Percentage Error (WAPE %)
 WAPE % = 
 DIVIDE(
     SUM(fact_inventory_daily[abs_forecast_error]),
@@ -254,7 +254,7 @@ DIVIDE(
     0
 )
 
-// 2. Proqnoz Dəqiqliyi %
+// 2. Forecast Accuracy %
 Forecast Accuracy = 1 - [WAPE %]
 
 // 3. Forecast Bias %
@@ -265,7 +265,7 @@ DIVIDE(
     0
 )
 
-// 4. Yenidən Sifariş Risk Dərəcəsi %
+// 4. Reorder Risk Rate %
 Reorder Risk Rate = 
 DIVIDE(
     SUM(fact_inventory_daily[below_reorder_flag]),
@@ -273,10 +273,10 @@ DIVIDE(
     0
 )
 
-// 5. Anbar Sağlamlıq Skoru %
+// 5. Inventory Health Score %
 Inventory Health Score = 1 - [Reorder Risk Rate]
 
-// 6. Anbarda Ümumi Kapital Dəyəri
+// 6. Total Capital Value in Inventory
 Total Inventory Value = 
 SUMX(
     fact_inventory_daily,
@@ -286,36 +286,36 @@ SUMX(
 
 ---
 
-## 🚀 Necə Təkrarlamaq Olar
+## 🚀 How to Reproduce
 
-**1. Repository Qurulumu**
+**1. Repository Setup**
 ```bash
 git clone https://github.com/nihatrza/supply-chain-inventory-optimization.git
 cd supply-chain-inventory-optimization
 ```
 
-**2. Python Mühiti və Data Pipeline**
+**2. Python Environment & Data Pipeline**
 ```bash
 pip install -r requirements.txt
 jupyter notebook notebooks/01_data_preprocessing_etl.ipynb
 ```
 
-**3. PostgreSQL Verilənlər Bazasına İdxal**
-- pgAdmin və ya psql shell açın.
-- `supply_chain_db` bazasını yaradın.
-- Sxem və indeksləri qurmaq üçün `sql/01_schema.sql` işlədin.
-- Fayl yolunu yeniləyərək datanı yükləmək üçün `sql/02_data_import.sql` işlədin.
-- Ad-hoc sorğuları icra etmək üçün `sql/03_analytical_queries.sql` işlədin.
+**3. PostgreSQL Database Import**
+- Open pgAdmin or the psql shell.
+- Create database `supply_chain_db`.
+- Run `sql/01_schema.sql` to instantiate the schema and indexes.
+- Run `sql/02_data_import.sql`, updating the file path to load the data.
+- Execute `sql/03_analytical_queries.sql` to run ad-hoc queries.
 
 **4. Power BI Dashboard**
-- `power_bi/Supply_Chain_Analytics.pbix` faylını Power BI Desktop-da açın.
-- `Transform Data → Data Source Settings` bölməsindən data mənbəyi məlumatlarını yerli PostgreSQL instansınıza uyğun yeniləyin.
+- Open `power_bi/Supply_Chain_Analytics.pbix` in Power BI Desktop.
+- Update data source credentials under `Transform Data → Data Source Settings`, pointing to your local PostgreSQL instance.
 
 ---
 
-## 👤 Müəllif və Əlaqə
+## 👤 Author & Contact
 
-**Nihat Rzaquluzadə**
+**Nihat Rzaguluzada**
 Data Analyst / Analytics Engineer
 
 🌐 LinkedIn: [linkedin.com/in/nihat-rzaguluzada](https://linkedin.com/in/nihat-rzaguluzada)
