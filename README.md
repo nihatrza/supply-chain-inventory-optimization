@@ -214,6 +214,10 @@ ORDER BY region, rank_in_region;
 
 ## 📊 Power BI Dashboard Architecture
 
+> 🚀 **Live Interactive Demo:**  
+> You can interact with the published multi-page dashboard directly in your browser:  
+> 👉 **[Open Live Dashboard on Power BI Service](https://app.powerbi.com/groups/me/reports/e963cc3a-6f19-4494-965b-0c0d2d1ed2c3/2f8a859922f375d99825?experience=power-bi)**
+
 The dashboard features a dark corporate UI theme designed for executive usability and fast diagnostic workflow across 5 pages:
 
 ### 1️⃣ Executive Overview
