@@ -6,6 +6,8 @@
 ![DAX](https://img.shields.io/badge/DAX-Optimization-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
+🔗 **[Click Here to View Live Interactive Power BI Dashboard](https://app.powerbi.com/groups/me/reports/e963cc3a-6f19-4494-965b-0c0d2d1ed2c3/2f8a859922f375d99825?experience=power-bi)** *(Microsoft Account Required)*
+
 An enterprise-grade, end-to-end Analytics Engineering project designed to optimize inventory levels, mitigate reorder risk, evaluate demand forecast accuracy, and streamline supplier logistics using **Python (ETL), PostgreSQL (Data Warehouse), and Power BI (Multi-Page Interactive Dashboard)**.
 
 ---
